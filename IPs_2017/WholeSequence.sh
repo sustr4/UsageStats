@@ -6,19 +6,57 @@
 #   1st: XML files location (directory)
 #   2nd: file name suffix
 
+DIR=`realpath "${BASH_ARGV[1]}"`
+SUFFIX="${BASH_ARGV[2]}"
+
+# Remove XMLs for unfinished machines
+date
+printf "Removing XMLs for unfinished machines "
+for file in ${DIR}/*.xml; do
+  if grep --quiet -E '^  <ETIME>0</ETIME>' $file; then
+    rm -f $file
+    printf "."
+  fi
+done
+echo " done"
+
+# Get highest ID
+date
+printf "Getting current maximum ID ... "
+COUNT=`onevm list | tail -n 1 | awk '{ print $1 }'`
+echo $COUNT
+
+# Get new files
+date
+echo Getting new files
+for i in $(seq 1 ${COUNT}); do
+  if [ ! -f ${DIR}/$i.xml ]; then
+    echo "$i"
+    onevm show --xml $i > $DIR/$i.xml
+  fi
+done
+
 
 # Produce a list of up/down events from individual XMLs
-for file in XMLs/*.xml; do ./Proc1File.rb $file; done > timeline_reduced_augmented.csv
+date
+echo Extracting events from XMLs
+for file in ${DIR}/*.xml; do ./Proc1File.rb $file; done > timeline${SUFFIX}.csv
 
 
 # Sort events by time and ommit zero timestamps (typically machines that are still running)
-cat timeline_reduced_augmented.csv | sort | grep -v -E '^0,' > timeline_reduced_augmented_sorted.csv
+date
+echo Sorting
+cat timeline${SUFFIX}.csv | sort | grep -v -E '^0,' > timeline${SUFFIX}_sorted.csv
 
 
 # Add up current pool usage timestamp by timestamp
-./CSVtoArray.rb timeline_reduced_augmented_sorted.csv > usage_reduced_augmented.csv
+date
+echo Compiling array
+./CSVtoArray.rb timeline${SUFFIX}_sorted.csv > usage${SUFFIX}.csv
 
 
 # Calculate daily maximum for each recognized segment (pool)
-./DailyMax.rb usage_reduced_augmented.csv > usage_reduced_augmented_maxes.csv
+date
+echo Getting daily maximae
+./DailyMax.rb usage${SUFFIX}.csv > usage${SUFFIX}_maxes.csv
 
