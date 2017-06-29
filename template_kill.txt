@@ -1,0 +1,20 @@
+
+_English version below_
+
+Vážený uživateli MetaCloudu!
+
+Dovolujeme si Vás upozornit, že jsme od Vás neobdrželi zprávu o dlouho běžících virtuálních strojích, na něž jsme Vás upozornili v březnu tohoto roku. Dotčené stroje (viz seznam níže) v dohledné době zastavíme a obsah perzistentních disků dočasně uložíme. Výpočetní zdroje tak budou uvolněny pro další využití.
+
+S pozdravem,
+Tým MetaCloudu, cloud@metacentrum.cz
+
+
+Dear MetaCloud user!
+
+You are receiving this message because you have not confirmed the continued need for certain virtual machines running in our cloud, as per our notification of March this year. The virtual machines in question (see list bellow) will be suspended within a few days and their persistent disks will be temporarily stored. This will help us free up resources and put them to new use.
+
+Best regards,
+the MetaCloud team, cloud@metacentrum.cz
+
+$VMLIST
+

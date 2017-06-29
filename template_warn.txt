@@ -1,0 +1,34 @@
+
+_English version below_
+
+Vážený uživateli MetaCloudu!
+
+Dovolujeme si Vám zaslat přehled virtuálních strojů, které provozujete s identitou "$USERNAME" v cloudovém prostředí MetaCentra.
+
+Celkový počet Vašich virtuálních strojů: $TOTAL
+Z toho starších než $THRESHOLD měsíce: $TOTALOLD
+
+Pokud tyto stroje stále používáte, je vše v pořádku a na zprávu nemusíte nijak reagovat. V opačném případě bychom Vás chtěli požádat, abyste při vhodné příležitosti navštívili uživatelské rozhraní MetaCloudu na adrese https://cloud.metacentrum.cz a nepotřebné virtuální stroje odstranili. Uvolníte tím zdroje pro ostatní uživatele i pro své vlastní další výpočty.
+
+Seznam všech Vašich virtuálních strojů starších než $THRESHOLD měsíce najdete na konci této zprávy.
+
+S pozdravem,
+Tým MetaCloudu, cloud@metacentrum.cz
+
+
+Dear MetaCloud user!
+
+You are receiving an overview of virtual machines you are running under your acount "$USERNAME" in MetaCentrum's cloud.
+
+Total number of your virtual machines: $TOTAL
+Total number of machines older than $THRESHOLD months: $TOTALOLD
+
+In case you are still using these machines, all is well and no action needs to be taken. Otherwise, please take a moment to visit the MetaCloud user interface at https://cloud.metacentrum.cz and remove virtual machines you do not need anymore. This will free resources for other users as well as for your own further use.
+
+Find a full list of virtual machines older than $THRESHOLD months at the very end of this message.
+
+Best regards,
+the MetaCloud team, cloud@metacentrum.cz
+
+$VMLIST
+

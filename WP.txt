@@ -1,0 +1,9 @@
+export ONE_HOST=https://cloud.metacentrum.cz
+export ONE_XMLRPC=$ONE_HOST:6443/RPC2
+#oneuser login -v sustr --x509 --cert ~/sustr_cesnet_cert.pem --key ~/sustr_cesnet_key.pem --force
+oneuser login -v oneadmin-sustr4 --x509 --cert ~/sustr_cesnet_cert.pem --key ~/sustr_cesnet_key.pem --force
+
+
+
+
+time onetemplate list | awk '{ print $1 }' | while read id ; do onetemplate show --xml $id; done > VMtemplates.xml
