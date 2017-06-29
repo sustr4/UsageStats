@@ -7,7 +7,9 @@ def augmentSeg (ip, user)
   subnet = ip[/\d+\.\d+\.\d+/]
   loc = ip[/\d+$/]
   if subnet.match(/147.251.253/) and loc.to_i < 127 then
-    subnet = "metaBrno"
+    subnet = "Meta Brno"
+  elsif subnet.match(/^147.251.9/) then
+    subnet = "Meta Brno old"
   elsif subnet.match(/^147.251/) then
     if user.match(/kypo-on/) then
       subnet = "KYPO"
