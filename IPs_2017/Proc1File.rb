@@ -39,11 +39,12 @@ xml = File.read(ARGV[0])
 
 template = Nokogiri::XML(xml)
 
+user = template.at_xpath("//#{roottag}/UNAME").content
+
 #IPs
 template.xpath("//#{roottag}/TEMPLATE/NIC").each do |nic|
 
   ip = nic.at_xpath("./IP").content
-  user = template.at_xpath("//#{roottag}/UNAME").content
   subnet = augmentSeg ip, user
   
   puts "#{template.at_xpath("//#{roottag}/STIME").content},up,1,#{ip},#{subnet},#{template.at_xpath("//#{roottag}/ID").content},#{user}"
@@ -52,11 +53,12 @@ template.xpath("//#{roottag}/TEMPLATE/NIC").each do |nic|
 end
 
 
-#template.xpath("//#{roottag}/HISTORY_RECORDS/HISTORY").each do |hist|
-#
-#  puts "#{template.at_xpath("//#{roottag}/ID").content};#{template.at_xpath("//#{roottag}/UNAME").content};#{ips.sub(/,$/, "")}"
-#
-#end
+template.xpath("//#{roottag}/HISTORY_RECORDS/HISTORY").each do |hist|
+
+  puts "#{hist.at_xpath("./STIME").content},up,1,,VM,#{template.at_xpath("//#{roottag}/ID").content},#{user}"
+  puts "#{hist.at_xpath("./ETIME").content},down,-1,,VM,#{template.at_xpath("//#{roottag}/ID").content},#{user}"
+
+end
 
 
 
