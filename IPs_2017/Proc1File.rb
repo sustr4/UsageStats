@@ -55,11 +55,22 @@ end
 
 template.xpath("//#{roottag}/HISTORY_RECORDS/HISTORY").each do |hist|
 
-  puts "#{hist.at_xpath("./STIME").content},up,1,,VM,#{template.at_xpath("//#{roottag}/ID").content},#{user}"
-  puts "#{hist.at_xpath("./ETIME").content},down,-1,,VM,#{template.at_xpath("//#{roottag}/ID").content},#{user}"
+  stime = hist.at_xpath("./STIME").content.to_i
+  etime = hist.at_xpath("./ETIME").content.to_i
+  if stime > 0 and stime < etime then
+    puts "#{stime},up,1,,VM,#{template.at_xpath("//#{roottag}/ID").content},#{user}"
+    puts "#{etime},down,-1,,VM,#{template.at_xpath("//#{roottag}/ID").content},#{user}"
+  end
 
 end
 
-
-
+#Whole lifetime of the machine
+stime = template.at_xpath("//#{roottag}/STIME").content.to_i
+etime = template.at_xpath("//#{roottag}/ETIME").content.to_i
+if stime > 0 then
+  puts "#{stime},up,1,,fullVM,#{template.at_xpath("//#{roottag}/ID").content},#{user}"
+  if etime > stime then
+    puts "#{etime},down,-1,,fullVM,#{template.at_xpath("//#{roottag}/ID").content},#{user}"
+  end
+end
 
