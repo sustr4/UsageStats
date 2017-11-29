@@ -6,8 +6,8 @@
 #   1st: XML files location (directory)
 #   2nd: file name suffix
 
-DIR=`realpath "${BASH_ARGV[1]}"`
-SUFFIX="${BASH_ARGV[2]}"
+DIR=`realpath "$1"`
+SUFFIX="$2"
 
 # Remove XMLs for unfinished machines
 date
@@ -59,4 +59,6 @@ echo Compiling array
 date
 echo Getting daily maximae
 ./DailyMax.rb usage${SUFFIX}.csv > usage${SUFFIX}_maxes.csv
+
+echo Files created with suffix \"${SUFFIX}\"
 

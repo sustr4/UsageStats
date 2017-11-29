@@ -41,14 +41,18 @@ template = Nokogiri::XML(xml)
 
 user = template.at_xpath("//#{roottag}/UNAME").content
 
+
 #IPs
 template.xpath("//#{roottag}/TEMPLATE/NIC").each do |nic|
 
-  ip = nic.at_xpath("./IP").content
-  subnet = augmentSeg ip, user
+  begin
+    ip = nic.at_xpath("./IP").content
+    subnet = augmentSeg ip, user
   
-  puts "#{template.at_xpath("//#{roottag}/STIME").content},up,1,#{ip},#{subnet},#{template.at_xpath("//#{roottag}/ID").content},#{user}"
-  puts "#{template.at_xpath("//#{roottag}/ETIME").content},down,-1,#{ip},#{subnet},#{template.at_xpath("//#{roottag}/ID").content},#{user}"
+    puts "#{template.at_xpath("//#{roottag}/STIME").content},up,1,#{ip},#{subnet},#{template.at_xpath("//#{roottag}/ID").content},#{user}"
+    puts "#{template.at_xpath("//#{roottag}/ETIME").content},down,-1,#{ip},#{subnet},#{template.at_xpath("//#{roottag}/ID").content},#{user}"
+  rescue NoMethodError
+  end
 
 end
 
@@ -59,7 +63,9 @@ template.xpath("//#{roottag}/HISTORY_RECORDS/HISTORY").each do |hist|
   etime = hist.at_xpath("./ETIME").content.to_i
   if stime > 0 and stime < etime then
     puts "#{stime},up,1,,VM,#{template.at_xpath("//#{roottag}/ID").content},#{user}"
-    puts "#{etime},down,-1,,VM,#{template.at_xpath("//#{roottag}/ID").content},#{user}"
+    if etime > 0 then
+      puts "#{etime},down,-1,,VM,#{template.at_xpath("//#{roottag}/ID").content},#{user}"
+    end
   end
 
 end
@@ -68,9 +74,14 @@ end
 stime = template.at_xpath("//#{roottag}/STIME").content.to_i
 etime = template.at_xpath("//#{roottag}/ETIME").content.to_i
 if stime > 0 then
-  puts "#{stime},up,1,,fullVM,#{template.at_xpath("//#{roottag}/ID").content},#{user}"
+  puts "#{stime},up,1,,wholeVM,#{template.at_xpath("//#{roottag}/ID").content},#{user}"
+  puts "#{stime},up,#{template.at_xpath("//#{roottag}/TEMPLATE/CPU").content},,CPU,#{template.at_xpath("//#{roottag}/ID").content},#{user}"
+  puts "#{stime},up,#{template.at_xpath("//#{roottag}/TEMPLATE/VCPU").content},,vCPU,#{template.at_xpath("//#{roottag}/ID").content},#{user}" unless template.at_xpath("//#{roottag}/TEMPLATE/VCPU").nil?
   if etime > stime then
-    puts "#{etime},down,-1,,fullVM,#{template.at_xpath("//#{roottag}/ID").content},#{user}"
+    puts "#{etime},down,-1,,wholeVM,#{template.at_xpath("//#{roottag}/ID").content},#{user}"
+    puts "#{etime},down,-#{template.at_xpath("//#{roottag}/TEMPLATE/CPU").content},,CPU,#{template.at_xpath("//#{roottag}/ID").content},#{user}"
+    puts "#{etime},down,-#{template.at_xpath("//#{roottag}/TEMPLATE/VCPU").content},,vCPU,#{template.at_xpath("//#{roottag}/ID").content},#{user}" unless template.at_xpath("//#{roottag}/TEMPLATE/VCPU").nil?
   end
 end
+
 
