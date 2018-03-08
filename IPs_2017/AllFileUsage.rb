@@ -12,6 +12,9 @@ flags = [  ]
 #collapse_groups = [ ]
 collapse_groups = [ "oneadmin", "fedcloud.egi.eu", "kypo", "mycroftmind", "peachnote.com", "enmr.eu", "perun", "sdi4apps", "cerit-sc", "cloud-devel", "portals-admins", "bioconductor", "vo.nextgeoss.eu", "chipster.csc.fi", "eo-poc-nuvla", "secant-service", "bioconductor-teachers", "irys-vuvl", "gputest.metacentrum.cz", "a2", "training.egi.eu", "vo.elixir-europe.org", "sdn-mu", "appdb-general", "rt", "dexlandia", "ops", "cloud-service-users", "demo.fedcloud.egi.eu" ]
 
+#separate_users = [ ]
+separate_users = [ "cerit-sc-admin" ]
+
 xml = File.read(ARGV[0])
 
 year = ARGV[1].nil? ? 2017 : ARGV[1].to_i
@@ -33,6 +36,10 @@ all.xpath("//#{roottag}/VM").each do |template|
   end
 
   group = template.at_xpath("./GNAME").content
+
+  if separate_users.include? group then
+    group = "Also in #{group}"
+  end
 
   if collapse_groups.include? group then
     user = "All members combined"
