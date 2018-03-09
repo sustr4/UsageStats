@@ -37,7 +37,7 @@ all.xpath("//#{roottag}/VM").each do |template|
 
   group = template.at_xpath("./GNAME").content
 
-  if separate_users.include? group then
+  if separate_users.include? user then
     group = "Also in #{group}"
   end
 
