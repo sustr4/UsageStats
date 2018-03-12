@@ -35,7 +35,7 @@ yend = DateTime.parse("#{year+1}-01-01T00:00:00+01:00").to_time.to_i
 all = Nokogiri::XML(xml)
 
 
-puts "\"id\",\"cluster\",\"cloud\",\"user\",\"group\",\"VM Start\",\"VM End\",\"Segment Start\",\"Segment End\",\"CPU\",\"real CPU\",\"vCPU\",\"Lifetime (s)\",\"Lifetime (hrs)\",\"Lifetime (weeks)\",\"Record life (weeks)\",\"CPU Hours\",\"< 1 hr\",\"< 1 day\",\"< 1 week\",\"< 1 month\",\"> 1 month\",\"Histogram tag\""
+puts "\"id\",\"cluster\",\"cloud\",\"user\",\"group\",\"collapsed user\",\"VM Start\",\"VM End\",\"Segment Start\",\"Segment End\",\"CPU\",\"real CPU\",\"vCPU\",\"Lifetime (s)\",\"Lifetime (hrs)\",\"Lifetime (weeks)\",\"Record life (weeks)\",\"CPU Hours\",\"< 1 hr\",\"< 1 day\",\"< 1 week\",\"< 1 month\",\"> 1 month\",\"Histogram tag\""
 
 all.xpath("//#{roottag}/VM").each do |template|
 
@@ -53,7 +53,9 @@ all.xpath("//#{roottag}/VM").each do |template|
   end
 
   if collapse_groups.include? group then
-    user = "All members combined"
+    collapsed_user = "All members combined"
+  else
+    collapsed_user = user
   end
 
   cpu = template.at_xpath("./TEMPLATE/CPU").nil? ? 0 : template.at_xpath("./TEMPLATE/CPU").content.to_f
@@ -118,7 +120,7 @@ all.xpath("//#{roottag}/VM").each do |template|
     end
 
     if stime != etime then
-      puts "#{id},#{cluster},#{cloud},\"#{user}\",\"#{group}\",#{Time.at(vmstime)},#{Time.at(vmetime)},#{Time.at(stime)},#{Time.at(etime)},#{cpu},#{real_cpu},#{vcpu},#{duration},#{'%.2f' % (duration/3600.0)},#{(duration/604800).round},#{((vmetime-vmstime)/604800.0).round},#{'%.2f' % (cpu*(duration/3600.0))},#{duraflag}"
+      puts "#{id},#{cluster},#{cloud},\"#{user}\",\"#{group}\",\"#{collapsed_user}\",#{Time.at(vmstime)},#{Time.at(vmetime)},#{Time.at(stime)},#{Time.at(etime)},#{cpu},#{real_cpu},#{vcpu},#{duration},#{'%.2f' % (duration/3600.0)},#{(duration/604800).round},#{((vmetime-vmstime)/604800.0).round},#{'%.2f' % (cpu*(duration/3600.0))},#{duraflag}"
     end
   end
 end
