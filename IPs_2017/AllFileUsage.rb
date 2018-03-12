@@ -24,7 +24,7 @@ yend = DateTime.parse("#{year+1}-01-01T00:00:00+01:00").to_time.to_i
 all = Nokogiri::XML(xml)
 
 
-puts "\"id\",\"cluster\",\"cloud\",\"user\",\"group\",\"VM Start\",\"VM End\",\"Segment Start\",\"Segment End\",\"CPU\",\"vCPU\",\"Lifetime (s)\",\"Lifetime (hrs)\",\"Lifetime (weeks)\",\"Record life (weeks)\",\"CPU Hours\",\"< 1 hr\",\"< 1 day\",\"< 1 week\",\"< 1 month\",\"> 1 month\""
+puts "\"id\",\"cluster\",\"cloud\",\"user\",\"group\",\"VM Start\",\"VM End\",\"Segment Start\",\"Segment End\",\"CPU\",\"vCPU\",\"Lifetime (s)\",\"Lifetime (hrs)\",\"Lifetime (weeks)\",\"Record life (weeks)\",\"CPU Hours\",\"< 1 hr\",\"< 1 day\",\"< 1 week\",\"< 1 month\",\"> 1 month\",\"Histogram tag\""
 
 all.xpath("//#{roottag}/VM").each do |template|
 
@@ -85,15 +85,15 @@ all.xpath("//#{roottag}/VM").each do |template|
 
     duration = etime-stime
     if duration < 3600 then
-      duraflag = "1,0,0,0,0"
+      duraflag = "1,0,0,0,0,\"< 1 hour\""
     elsif duration < 86400 then
-      duraflag = "0,1,0,0,0"
+      duraflag = "0,1,0,0,0,\"< 1 day\""
     elsif duration < 604800 then
-      duraflag = "0,0,1,0,0"
+      duraflag = "0,0,1,0,0,\"< 1 week\""
     elsif duration < 2592000 then
-      duraflag = "0,0,0,1,0"
+      duraflag = "0,0,0,1,0,\"< 1 month\""
     else
-      duraflag = "0,0,0,0,1"
+      duraflag = "0,0,0,0,1,\"> 1 month\""
     end
 
     if stime != etime then
